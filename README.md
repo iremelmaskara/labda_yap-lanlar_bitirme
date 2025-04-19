@@ -1,0 +1,1 @@
+# labda_yap-lanlar_bitirme
