@@ -13,11 +13,7 @@ Kb_rpm =Kbb*2*pi/60;
 kt=10;
 s=tf('s');
 %% sürekli hal hız hatası isterleri
-Kh=0.1;  %%bu ess nin katsayısı gibi ama neden 
-%% ksi ve wn hesabı 
-a=pi^2+log(yuzde_asim/100)^2;
-ksi=-log(yuzde_asim/100)/sqrt(a);
-wn=4/(ksi*ts);
+Kh=0.1;
 %% ACTF S-domeni
 n=0.95;
 d=[102e-3 1];
@@ -30,6 +26,11 @@ Ts=10e-3;
 %% geçici rejim kriterleri (isterler)
 yuzde_asim=4.32; 
 ts= 4/min_kok; 
+%% ksi ve wn hesabı 
+a=pi^2+log(yuzde_asim/100)^2;
+ksi=-log(yuzde_asim/100)/sqrt(a);
+wn=4/(ksi*ts);
+
 %% ACTF Z-dönüşüm
 z=tf('z',Ts);
 ACTF_Z= c2d(ACTF,Ts);
@@ -49,7 +50,7 @@ Gss=tf(nss,dss);
 Gzz=c2d(Gss,Ts);
 [nzz,dzz]=tfdata(Gzz,'v');
 %% 
-Ki=Kv*Ts/(polyval(nzz,1)/polyval(dzz,1));
+Ki=Kv*Ts/(polyval(nzz,1)/polyval(dzz,1))
 %% Kp,Kd hesaplama
 genlik_z1=abs(z1); % Genlik (|z1|)
 beta=angle(z1);    % Açı (radyan)
@@ -61,11 +62,11 @@ gama=angle(Gp_z1);    % Açı (radyan)
 A=-cos(gama)/genlik_Gp_z1;
 B=-2*Ki*genlik_z1*(genlik_z1-cos(beta)/(genlik_z1^2-2*genlik_z1*cos(beta)+1));
 C=(-genlik_z1*sin(gama)+cos(beta)*sin(gama))/(genlik_Gp_z1*sin(beta));
-Kp=A+B+C;
+Kp=A+B+C
 
 D=genlik_z1/sin(beta);
 H=Ki*sin(beta)/(genlik_z1-2*cos(beta)+(1/genlik_z1));
 F=sin(gama)/genlik_Gp_z1;
-Kd=D*(H+F);
+Kd=D*(H+F)
 
 % sim('iremelmas_tasarim.slx')
